@@ -1,0 +1,35 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      php: 8.1 # Use a versão que o seu projeto requer, altere se necessário
+    commands:
+      - echo "Atualizando o gerenciador de pacotes..."
+      - apt-get update
+      - echo "Instalando PHP e extensões necessárias..."
+      - apt-get install -y php php-cli php-mbstring php-xml php-zip unzip curl # Adicione outras extensões que você precisa
+      - echo "Verificando versão do PHP instalada..."
+      - php --version
+      - echo "Instalando o Composer..."
+      - curl -sS https://getcomposer.org/installer | php
+      - mv composer.phar /usr/local/bin/composer
+  pre_build:
+    commands:
+      - echo "Instalando dependências do Composer..."
+      - composer install
+  build:
+    commands:
+      - echo "Executando testes com cobertura de código..."
+  post_build:
+    commands:
+      - echo "Build concluído com sucesso!"
+artifacts:
+  files:
+    - '**/*'
+    - '!vendor/**' # Opcional: exclui a pasta de dependências do Composer nos artefatos gerados
+    - '!tests/**'  # Opcional: exclui os arquivos de teste
+    name: build-output.zip # Opcional: nome do arquivo compactado gerado
+cache:
+  paths:
+    - vendor/** # Armazena o cache da pasta vendor para acelerar builds futuros
