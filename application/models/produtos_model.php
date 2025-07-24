@@ -35,8 +35,12 @@ class Produtos_model extends CI_Model {
         $this->db->update('produtos');
     }
     public function selecionarProdutosId($idProduto){
-        return $this->db->get_where('produtos', array('id'=> $idProduto))->result_array();
-
+        if (is_array($idProduto)) {
+            $this->db->where_in('id', $idProduto);
+        } else {
+            $this->db->where('id', $idProduto);
+        }
+        return $this->db->get('produtos')->result_array();
     }
     
     // Relatório: Produtos em falta no estoque
