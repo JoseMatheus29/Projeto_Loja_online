@@ -23,7 +23,7 @@ $is_adm = ($usuario_logado && $usuario_logado['tipo'] == 'adm');
                             <i class="bi bi-chevron-down ml-1 text-xs"></i>
                         </button>
                         <div x-show="open" @click.away="open = false" class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-20">
-                            <a href="<?= base_url() ?>ProdutoController" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Produtos</a>
+                            <a href="<?= base_url() ?>ProdutoController/index" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Produtos</a>
                             <a href="<?= base_url() ?>CategoriaController" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Categorias</a>
                             <a href="<?= base_url() ?>usuarioController" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Usuários</a>
                         </div>
