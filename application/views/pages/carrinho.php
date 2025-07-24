@@ -1,93 +1,110 @@
-<?php   
-    if (isset($_SESSION['usuario_logado'])){
-        $usuario_logado = $_SESSION['usuario_logado'];
-    }else{
-        redirect(base_url());
-    }
-    $carrinho = $this->usuarios_model->retornaProdutosCarrinho($usuario_logado['user_id']);
-    $produtosArray = json_decode($carrinho['carrinho'], true);
-    $produtosPedidos = array();
-    $valorPedido = 0;
-            
-?>
+<div x-data="{}" class="container mx-auto px-4 sm:px-8 py-8">
+    <h2 class="text-2xl font-semibold leading-tight mb-6">Meu Carrinho</h2>
 
+    <!-- Alertas -->
+    <?php if ($this->session->flashdata('success')) : ?>
+        <div class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 mb-4" role="alert">
+            <p><?= $this->session->flashdata('success') ?></p>
+        </div>
+    <?php endif; ?>
+    <?php if ($this->session->flashdata('danger')) : ?>
+        <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-4" role="alert">
+            <p><?= $this->session->flashdata('danger') ?></p>
+        </div>
+    <?php endif; ?>
 
+    <?php if (empty($produtos_carrinho)) : ?>
+        <div class="bg-blue-100 border-l-4 border-blue-500 text-blue-700 p-4" role="alert">
+            <p class="font-bold">Seu carrinho está vazio</p>
+            <p>Adicione produtos à sua cesta para vê-los aqui.</p>
+        </div>
+        <div class="mt-6">
+            <a href="<?= base_url() ?>" class="bg-primary text-white px-6 py-3 rounded-md hover:bg-primary-hover transition">
+                Continuar Comprando
+            </a>
+        </div>
+    <?php else : ?>
+        <div class="flex flex-col lg:flex-row gap-8">
+            <!-- Lista de Produtos -->
+            <div class="w-full lg:w-2/3">
+                <div class="bg-white shadow-md rounded-lg overflow-hidden">
+                    <table class="min-w-full leading-normal">
+                        <thead>
+                            <tr>
+                                <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                    Produto
+                                </th>
+                                <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-center text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                    Quantidade
+                                </th>
+                                <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-right text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                    Subtotal
+                                </th>
+                                <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-right text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                                    Ação
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php foreach ($produtos_carrinho as $produto) : ?>
+                                <tr>
+                                    <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                                        <div class="flex items-center">
+                                            <div class="flex-shrink-0 w-20 h-20">
+                                                <img class="w-full h-full object-cover rounded" src="<?= base_url() ?>assets/img/<?= $produto['foto'] ?>" alt="<?= htmlspecialchars($produto['nome']) ?>">
+                                            </div>
+                                            <div class="ml-4">
+                                                <p class="text-gray-900 font-semibold whitespace-no-wrap"><?= htmlspecialchars($produto['nome']) ?></p>
+                                                <p class="text-gray-600 whitespace-no-wrap">R$ <?= number_format($produto['valor'], 2, ',', '.') ?></p>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm text-center">
+                                        <p class="text-gray-900 whitespace-no-wrap"><?= $produto['quantidade_carrinho'] ?></p>
+                                    </td>
+                                    <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm text-right">
+                                        <p class="text-gray-900 font-semibold whitespace-no-wrap">R$ <?= number_format($produto['subtotal'], 2, ',', '.') ?></p>
+                                    </td>
+                                    <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm text-right">
+                                        <a href="<?= base_url('index.php/carrinhoController/deletarProdutoCarrinho/' . $produto['id']) ?>" class="text-red-500 hover:text-red-700 transition">
+                                            <i class="bi bi-trash-fill text-lg"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
 
-<br><br><br>
+            <!-- Resumo do Pedido -->
+            <div class="w-full lg:w-1/3">
+                <div class="bg-white shadow-md rounded-lg p-6">
+                    <h3 class="text-lg font-semibold border-b pb-4">Resumo do Pedido</h3>
+                    <div class="flex justify-between items-center mt-4">
+                        <span class="text-gray-600">Subtotal</span>
+                        <span class="font-semibold">R$ <?= number_format($valor_total, 2, ',', '.') ?></span>
+                    </div>
+                    <div class="flex justify-between items-center mt-2">
+                        <span class="text-gray-600">Frete</span>
+                        <span class="font-semibold">Grátis</span>
+                    </div>
+                    <div class="border-t mt-4 pt-4">
+                        <div class="flex justify-between items-center font-bold text-lg">
+                            <span>Total</span>
+                            <span>R$ <?= number_format($valor_total, 2, ',', '.') ?></span>
+                        </div>
+                    </div>
 
-<main role="main" class="col-md-9 ml-sm-auto col-lg-12 px-4">
-	<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-		<h2>Carrinho</h2>
-	</div>
-
-
-	<div class="table-responsive">
-		<table class="table table-bordered table-hover">
-			<thead>
-				<tr>
-                    <th></th>
-                    <th>Nome</th>
-                    <th>Tamanho</th>
-                    <th>Valor</th>
-                    <th>Descricao</th>
-				</tr>
-			</thead>
-			<tbody>
-                <?php 
-                    if(!(is_array($produtosArray))):?>
-                        <p>Você não tem nenhum produto no carrinho</p>
-                    <?php else:
-                        foreach ($produtosArray as $produtos): //captando os dados que vinheram do banco
-                            if (is_array($produtos)): 
-
-                                foreach ($produtos as $produto) : //interando o array
-                                    $resultadoProdutos = $this->produtos_model->selecionarProdutosId($produto['id_produto']);
-                                        foreach($resultadoProdutos as $produto):
-                                            array_push($produtosPedidos, $produto['id']);
-                                            $valorPedido+=$produto['valor']
-                                            
-                                        
-                                        ?>
-                                            <tr>
-                                                <td><img class="card-img-top" src="<?= base_url()?>assets/img/<?php echo $produto['foto']?>" alt="Imagem roupa"></td>
-                                                <td><?php echo $produto['nome'];?></td>
-                                                <td><?php echo $produto['tamanho'];?></td>
-                                                <td><?php echo $produto['valor'];?></td>
-                                                <td><?php echo $produto['descricao'];?></td>
-                                                
-                                                <td>
-                                                    <a href="javascript:goDelete(<?= $usuario_logado['user_id']?>,<?= $produto['id']?> )" class='btn btn-sm btn-danger '>
-                                                    <i class="bi bi-trash3"></i>
-                                                    </a>
-                                                </td>
-                                            </tr>
-                                        <?php endforeach?>
-                                <?php endforeach?>
-                            <?php endif?>     
-
-                        <?php endforeach?>
-                        
-                    <?php endif;
-                        $produtosPedidosJson  = json_encode($produtosPedidos);
-                    ?>
-
-			</tbody>
-		</table>
-        <h4>Valor Final: <?php echo  $valorPedido;?> </h4>
-
-        <a   href="<?= base_url()?>carrinhoController/finalizar/<?= urlencode($produtosPedidosJson) ?>/<?= $usuario_logado['user_id'];?>/<?=$valorPedido?>" class="btn btn btn-sm"  id="botaoCard" id="botao">Finalizar pedido</a>
-	</div>
-
-</main>
-
-<script>
-    function goDelete(idUsuario, idProduto){
-        var myUrl = 'carrinhoController/deletarProdutoCarrinho/'+idUsuario+'/'+idProduto
-        if(confirm('Deseja realmente apagar esse registro?')){
-            window.location.href =myUrl
-        }else{
-            alert("Registro não alterado")
-            return false
-        }
-    }
-</script>
+                    <form action="<?= base_url('index.php/carrinhoController/finalizar') ?>" method="POST" class="mt-6">
+                        <input type="hidden" name="ids_produtos" value="<?= $ids_produtos_string ?>">
+                        <input type="hidden" name="valor_total" value="<?= $valor_total ?>">
+                        <button type="submit" class="w-full bg-green-500 text-white font-bold py-3 px-4 rounded-lg hover:bg-green-600 transition">
+                            Finalizar Pedido
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    <?php endif; ?>
+</div>
