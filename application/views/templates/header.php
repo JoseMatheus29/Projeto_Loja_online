@@ -49,5 +49,5 @@
     <!-- Validações de Formulário -->
     <script src="<?= base_url('assets/js/formValidations.js') ?>"></script>
 </head>
-<body class="bg-gray-50 font-sans text-gray-800">
-    <div id="app">
+<body class="bg-gray-50 font-sans text-gray-800 flex flex-col min-h-screen">
+    <div id="app" class="flex-grow">
