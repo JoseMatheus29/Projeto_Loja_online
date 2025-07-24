@@ -32,7 +32,7 @@ $is_adm = ($usuario_logado && $usuario_logado['tipo'] == 'adm');
             </div>
         </div>
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8" x-data>
             <?php foreach($produtos as $produto): ?>
                 <div class="bg-white rounded-lg shadow-md overflow-hidden group transition-transform transform hover:-translate-y-2">
                     <div class="relative">
@@ -47,7 +47,7 @@ $is_adm = ($usuario_logado && $usuario_logado['tipo'] == 'adm');
                         <?php if($is_adm): ?>
                             <div class="absolute top-2 right-2 flex space-x-2">
                                 <a href="javascript:goDelete(<?= $produto['id']?>)" class="bg-red-500 text-white rounded-full p-2 h-8 w-8 flex items-center justify-center hover:bg-red-600"><i class="bi bi-trash3"></i></a>
-                                <a href="#" class="bg-yellow-500 text-white rounded-full p-2 h-8 w-8 flex items-center justify-center hover:bg-yellow-600"><i class="bi bi-pencil"></i></a>
+                                <button @click="$dispatch('open-modal', { id: 'edit-product-<?= $produto['id'] ?>' })" class="bg-yellow-500 text-white rounded-full p-2 h-8 w-8 flex items-center justify-center hover:bg-yellow-600"><i class="bi bi-pencil"></i></button>
                             </div>
                         <?php endif; ?>
                     </div>
@@ -64,6 +64,20 @@ $is_adm = ($usuario_logado && $usuario_logado['tipo'] == 'adm');
         </div>
     </section>
 </main>
+
+<!-- Carrega os Modais de Edição -->
+<?php
+if ($is_adm) {
+    // Supondo que $categorias está disponível. Se não, precisa ser carregado no controller.
+    $CI =& get_instance();
+    $CI->load->model('categoria_model');
+    $categorias = $CI->categoria_model->getAll();
+
+    foreach($produtos as $produto) {
+        $this->load->view('pages/atualizarProdutos', ['produto' => $produto, 'categorias' => $categorias]);
+    }
+}
+?>
 
 <script>
     function goDelete(id){
