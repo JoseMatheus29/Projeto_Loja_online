@@ -27,6 +27,15 @@
             </div>
         <?php if($usuario_logado['tipo'] == 'adm'):?>
             <div class="form-group">
+                <label for="categoria_id">Categoria</label>
+                <select class="form-control" name="categoria_id" id="categoria_id" required>
+                    <option value="">Selecione</option>
+                    <?php if(isset($categorias)): foreach($categorias as $cat): ?>
+                        <option value="<?= $cat['id'] ?>" <?= (isset($produto['categoria_id']) && $produto['categoria_id'] == $cat['id']) ? 'selected' : '' ?>><?= htmlspecialchars($cat['nome']) ?></option>
+                    <?php endforeach; endif; ?>
+                </select>
+            </div>
+            <div class="form-group">
                 <label for="nome" class="col-form-label" >Nome:</label>
                 <input type="text" class="form-control" name="nome" value="<?php echo $produto['nome']?>">
             </div>

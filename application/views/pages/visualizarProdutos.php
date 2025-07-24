@@ -12,22 +12,23 @@
 
 ?>
 <main role="main" class="col-md-9 ml-sm-auto col-lg-12 px-4">
-	<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-		<h1 class="h2">Pedidos</h1>
-	</div>
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <h1 class="h2">Pedidos</h1>
+    </div>
     <a class="btn btn" id="botaoCard" href="<?= base_url()?>pedidosController/?idUsuario=<?=$usuario_logado['user_id']?>">Voltar </a>
-	<div class="table-responsive">
-		<table class="table table-bordered table-hover">
-			<thead>
+    <div class="table-responsive">
+        <table class="table table-bordered table-hover">
+            <thead>
                 <tr>
                     <th></th>
                     <th>Nome</th>
                     <th>Tamanho</th>
                     <th>Valor Item</th>
                     <th>Descricao</th>
-				</tr>
-			</thead>
-			<tbody>
+                    <th>Categoria</th>
+                </tr>
+            </thead>
+            <tbody>
                 
                     <?php 
                         foreach($produtos as $produto):
@@ -40,14 +41,23 @@
                                         <td><?php echo $produto['tamanho'];?></td>
                                         <td><?php echo $produto['valor'];?></td>
                                         <td><?php echo $produto['descricao'];?></td>
+                                        <td>
+                                            <?php
+                                            if (isset($produto['categoria_nome'])) {
+                                                echo htmlspecialchars($produto['categoria_nome']);
+                                            } else {
+                                                echo '-';
+                                            }
+                                            ?>
+                                        </td>
                                     </tr>
                                     <?php endif?>
                                 <?php endforeach?>
                             <?php endforeach?>
                         <?php endforeach?>
-			</tbody>
-		</table>
-	</div>
+            </tbody>
+        </table>
+    </div>
 </main>
 
 <script>

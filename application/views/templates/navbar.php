@@ -29,6 +29,8 @@
                             <a class="nav-item nav-link" id="Home" href="<?= base_url() ?>pedidosController/?idUsuario=<?=$usuario_logado['user_id']?>">Meus pedidos</a>
                             <a class="nav-item nav-link" id="Cadastrar" href="<?= base_url() ?>usuarioController/cadastrarUsuario">Cadastrar Usuarios</a>
                             <a class="nav-item nav-link" id="CadastraProdutos" href="<?= base_url() ?>ProdutoController">Cadastrar Produtos</a>
+                            <a class="nav-item nav-link" id="ListarCategorias" href="<?= base_url() ?>CategoriaController">Categorias</a>
+                            <a class="nav-item nav-link" id="CadastrarCategoria" href="<?= base_url() ?>CategoriaController/nova">Cadastrar Categoria</a>
                             <a class="nav-item nav-link" id="Entrar" href="<?= base_url() ?>usuarioController/sair">Sair</a>
 
 

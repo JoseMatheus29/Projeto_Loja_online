@@ -1,13 +1,9 @@
-SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-START TRANSACTION;
-SET time_zone = "+00:00";
-
 CREATE TABLE `pedidos` (
   `id` int(64) NOT NULL,
   `id_produtos` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
   `id_usuario` int(64) NOT NULL,
   `status` varchar(64) NOT NULL,
-  `data_entrega` date DEFAULT current_timestamp(),
+ `data_entrega` date DEFAULT NULL,
   `valor` int(64) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 

@@ -3,8 +3,11 @@
 class Produtos_model extends CI_Model {
 
 
-    public function index(){ 
-        return $this->db->get("produtos")->result_array();
+    public function index(){
+        $this->db->select('produtos.*, categorias.nome as categoria_nome');
+        $this->db->from('produtos');
+        $this->db->join('categorias', 'produtos.categoria_id = categorias.id', 'left');
+        return $this->db->get()->result_array();
     }
 
 
