@@ -45,9 +45,10 @@ class Produtos_model extends CI_Model {
     
     // Relatório: Produtos em falta no estoque
     public function getProdutosEmFalta() {
-        $this->db->select('*');
+        $this->db->select('produtos.*, categorias.nome as categoria_nome');
         $this->db->from('produtos');
-        $this->db->where('quantidade', 0);
+        $this->db->join('categorias', 'produtos.categoria_id = categorias.id', 'left');
+        $this->db->where('quantidade <=', 0);
         $query = $this->db->get();
         return $query->result_array();
     }

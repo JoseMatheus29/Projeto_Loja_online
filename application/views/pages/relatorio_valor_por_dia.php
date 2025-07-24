@@ -11,119 +11,72 @@
         box-shadow: 0 2px 8px rgba(79,140,255,0.07);
     }
     .relatorio-navbar .btn {
-        margin-left: 0.7em;
+        margin-left: 0.5rem;
         font-weight: 600;
-        border-radius: 8px;
-        box-shadow: 0 2px 8px rgba(79,140,255,0.10);
-        transition: background 0.2s;
+        border-radius: 10px;
+        padding: 0.75rem 1.5rem;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        transition: all 0.3s ease;
+        border: none;
+        font-size: 0.9rem;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+    .relatorio-navbar .btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(0,0,0,0.15);
     }
     .relatorio-navbar .btn-pdf {
-        background: #e53935;
-        color: #fff;
-        border: none;
-    }
-    .relatorio-navbar .btn-pdf:hover {
-        background: #b71c1c;
+        background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
         color: #fff;
     }
     .relatorio-navbar .btn-csv {
-        background: #43a047;
-        color: #fff;
-        border: none;
-    }
-    .relatorio-navbar .btn-csv:hover {
-        background: #1b5e20;
+        background: linear-gradient(135deg, #26de81 0%, #20bf6b 100%);
         color: #fff;
     }
     .relatorio-navbar .btn-voltar {
-        background: #fff;
-        color: #4f8cff;
-        border: 1px solid #4f8cff;
+        background: #ffffff;
+        color: #4a5568;
         font-weight: 600;
-    }
-    .relatorio-navbar .btn-voltar:hover {
-        background: #4f8cff;
-        color: #fff;
-    }
-    .dashboard-row {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 2rem;
-        width: 100%;
-    }
-    .dashboard-col {
-        flex: 1 1 0;
-        min-width: 350px;
-        max-width: 50%;
-        display: flex;
-        flex-direction: column;
-    }
-    @media (max-width: 900px) {
-        .dashboard-row { flex-direction: column; gap: 1rem; }
-        .dashboard-col { min-width: 0; max-width: 100%; }
-    }
-    .pdf-export .dashboard-row {
-        flex-direction: column !important;
-        gap: 1.5rem !important;
-    }
-    .pdf-export .dashboard-col {
-        min-width: 0 !important;
-        width: 100% !important;
-        max-width: 100% !important;
-    }
-    @media print {
-        .dashboard-row { flex-direction: column !important; gap: 1.5rem !important; }
-        .dashboard-col { min-width: 0 !important; width: 100% !important; max-width: 100% !important; }
+        border: 1px solid #e2e8f0;
     }
     .dashboard-card {
         box-shadow: 0 4px 24px rgba(0,0,0,0.08), 0 1.5px 4px rgba(0,0,0,0.08);
         border-radius: 18px;
         background: #fff;
-        padding: 2rem 1.5rem;
-        margin-bottom: 2rem;
-        transition: box-shadow 0.3s;
+        padding: 1.5rem;
+        transition: all 0.3s ease;
         width: 100%;
-    }
-    .dashboard-card:hover {
-        box-shadow: 0 8px 32px rgba(0,0,0,0.16), 0 3px 8px rgba(0,0,0,0.12);
-    }
-    .dashboard-title {
-        font-weight: 700;
-        font-size: 2.1rem;
-        color: #2d3a4b;
-        margin-bottom: 0.5rem;
-    }
-    .dashboard-subtitle {
-        color: #6c757d;
-        font-size: 1.1rem;
+        border: 1px solid rgba(0,0,0,0.05);
         margin-bottom: 1.5rem;
     }
-    .dashboard-insight {
-        background: #eaf6ff;
-        border-left: 5px solid #4f8cff;
-        border-radius: 8px;
-        padding: 1em 1.5em;
-        margin-bottom: 1.5em;
-        color: #2d3a4b;
-        font-size: 1.1em;
-        font-weight: 500;
+    .card-icon {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
         display: flex;
         align-items: center;
-        gap: 0.7em;
+        justify-content: center;
+        margin-bottom: 1rem;
+        font-size: 1.8rem;
     }
-    .dashboard-insight i {
-        color: #4f8cff;
-        font-size: 1.5em;
+    .card-value {
+        font-size: 2rem;
+        font-weight: 700;
+        color: #2d3748;
+        margin: 0.5rem 0;
     }
-    .dashboard-table th, .dashboard-table td {
-        vertical-align: middle;
-    }
-    @media (max-width: 900px) {
-        .dashboard-title { font-size: 1.3rem; }
-        .dashboard-card { padding: 1rem 0.5rem; }
+    .card-label {
+        font-size: 0.9rem;
+        color: #718096;
+        font-weight: 500;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
     }
     canvas { max-width: 100% !important; height: 350px !important; margin: 0 auto; display: block; }
 </style>
+
 <div class="relatorio-navbar">
     <div>
         <a href="javascript:history.back()" class="btn btn-voltar"><i class="bi bi-arrow-left"></i> Voltar</a>
@@ -133,168 +86,265 @@
         <button class="btn btn-csv" onclick="exportarCSV()"><i class="bi bi-file-earmark-spreadsheet"></i> Exportar CSV</button>
     </div>
 </div>
-<main class="container-fluid px-4" id="relatorio-main-valor">
-    <div class="dashboard-title mt-4 mb-1">Relatórios &gt; Valor Recebido por Dia</div>
-    <div class="dashboard-subtitle">Veja a evolução diária das vendas, melhores dias, médias e tendências.</div>
-    <div class="dashboard-row mb-4">
-        <div class="dashboard-col">
-            <div class="dashboard-card text-center">
-                <div><i class="bi bi-calendar-event" style="font-size:2em;color:#4f8cff;"></i></div>
-                <div class="mt-2">Dias de Venda</div>
-                <div class="h3 mb-0"><?= count($valores) ?></div>
+
+<main class="container-fluid px-4" id="relatorio-main">
+    <?php
+        $totalArrecadado = array_sum(array_column($valores, 'total_valor'));
+        $totalPedidos = array_sum(array_column($valores, 'total_pedidos'));
+        $ticketMedio = $totalPedidos > 0 ? $totalArrecadado / $totalPedidos : 0;
+        $diaMaiorFaturamento = 'N/A';
+        $maiorValor = 0;
+        if (!empty($valores)) {
+            $maiorValorRow = max(array_map(function($item) {
+                return $item['total_valor'];
+            }, $valores));
+            $key = array_search($maiorValorRow, array_column($valores, 'total_valor'));
+            $diaMaiorFaturamento = date('d/m/Y', strtotime($valores[$key]['data']));
+            $maiorValor = $valores[$key]['total_valor'];
+        }
+    ?>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
+        <div class="dashboard-card text-center">
+            <div class="card-icon mx-auto" style="background: linear-gradient(135deg, #26de81 0%, #20bf6b 100%); color: white;">
+                <i class="bi bi-cash-stack"></i>
             </div>
+            <div class="card-label">Total Arrecadado</div>
+            <div class="card-value">R$ <?= number_format($totalArrecadado, 2, ',', '.') ?></div>
         </div>
-        <div class="dashboard-col">
-            <div class="dashboard-card text-center">
-                <div><i class="bi bi-cash-coin" style="font-size:2em;color:#00c48c;"></i></div>
-                <div class="mt-2">Total Recebido</div>
-                <div class="h3 mb-0">R$ <?= number_format(array_sum(array_column($valores, 'total_valor')), 2, ',', '.') ?></div>
+        <div class="dashboard-card text-center">
+            <div class="card-icon mx-auto" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: white;">
+                <i class="bi bi-bag-check-fill"></i>
             </div>
+            <div class="card-label">Total de Pedidos</div>
+            <div class="card-value"><?= $totalPedidos ?></div>
+        </div>
+        <div class="dashboard-card text-center">
+            <div class="card-icon mx-auto" style="background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); color: white;">
+                <i class="bi bi-graph-up-arrow"></i>
+            </div>
+            <div class="card-label">Ticket Médio</div>
+            <div class="card-value">R$ <?= number_format($ticketMedio, 2, ',', '.') ?></div>
+        </div>
+        <div class="dashboard-card text-center">
+            <div class="card-icon mx-auto" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;">
+                <i class="bi bi-calendar-star-fill"></i>
+            </div>
+            <div class="card-label">Dia de Pico</div>
+            <div class="card-value" style="font-size: 1.5rem;"><?= $diaMaiorFaturamento ?></div>
         </div>
     </div>
-    <div class="dashboard-row mb-4">
-        <div class="dashboard-col">
-            <div class="dashboard-card">
-                <h5 class="mb-3"><i class="bi bi-graph-up"></i> Evolução Diária das Vendas</h5>
-                <canvas id="graficoLinha"></canvas>
-            </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+        <div class="dashboard-card">
+            <h5 class="mb-3 font-semibold text-gray-800"><i class="bi bi-graph-up"></i> Evolução do Faturamento Diário</h5>
+            <canvas id="graficoEvolucao"></canvas>
         </div>
-        <div class="dashboard-col">
-            <div class="dashboard-card">
-                <h5 class="mb-3"><i class="bi bi-bar-chart"></i> Vendas por Dia</h5>
-                <canvas id="graficoBarra"></canvas>
-            </div>
+        <div class="dashboard-card">
+            <h5 class="mb-3 font-semibold text-gray-800"><i class="bi bi-pie-chart"></i> Distribuição de Faturamento</h5>
+            <canvas id="graficoDistribuicao"></canvas>
+        </div>
+        <div class="dashboard-card">
+            <h5 class="mb-3 font-semibold text-gray-800"><i class="bi bi-bar-chart-line-fill"></i> Evolução de Pedidos</h5>
+            <canvas id="graficoPedidos"></canvas>
+        </div>
+        <div class="dashboard-card">
+            <h5 class="mb-3 font-semibold text-gray-800"><i class="bi bi-receipt-cutoff"></i> Ticket Médio por Dia</h5>
+            <canvas id="graficoTicketMedio"></canvas>
         </div>
     </div>
-    <div class="dashboard-card" style="margin-top: 3rem;">
-        <h5 class="mb-3"><i class="bi bi-table"></i> Detalhamento Completo</h5>
-        <table class="table table-bordered table-hover dashboard-table">
-            <thead class="thead-light">
-                <tr>
-                    <th>Data</th>
-                    <th>Total de Pedidos</th>
-                    <th>Valor Total (R$)</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php foreach($valores as $valor): ?>
+
+    <div class="dashboard-card overflow-x-auto">
+        <h5 class="mb-4 text-lg font-semibold text-gray-800"><i class="bi bi-table"></i> Detalhamento de Faturamento por Dia</h5>
+        <div class="overflow-hidden border border-gray-200 rounded-lg shadow-sm">
+            <table class="min-w-full divide-y divide-gray-200" id="tabela-detalhes">
+                <thead class="bg-gray-50">
                     <tr>
-                        <td><?= date('d/m/Y', strtotime($valor['data'])) ?></td>
-                        <td><?= $valor['total_pedidos'] ?></td>
-                        <td>R$ <?= number_format($valor['total_valor'], 2, ',', '.') ?></td>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Data</th>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Total de Pedidos</th>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Valor Total (R$)</th>
                     </tr>
-                <?php endforeach; ?>
-            </tbody>
-        </table>
+                </thead>
+                <tbody class="bg-white divide-y divide-gray-200">
+                    <?php if(!empty($valores)): ?>
+                        <?php foreach($valores as $valor): ?>
+                            <tr class="hover:bg-gray-50 transition-colors duration-200">
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800"><?= date('d/m/Y', strtotime($valor['data'])) ?></td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600 text-center"><?= $valor['total_pedidos'] ?></td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-gray-800">R$ <?= number_format($valor['total_valor'], 2, ',', '.') ?></td>
+                            </tr>
+                        <?php endforeach; ?>
+                    <?php else: ?>
+                        <tr>
+                            <td colspan="3" class="px-6 py-12 text-center text-sm text-gray-500">
+                                <div class="flex flex-col items-center justify-center">
+                                    <i class="bi bi-inbox text-4xl text-gray-400 mb-3"></i>
+                                    <span class="font-medium">Nenhum faturamento encontrado no período.</span>
+                                </div>
+                            </td>
+                        </tr>
+                    <?php endif; ?>
+                </tbody>
+            </table>
+        </div>
     </div>
 </main>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 <script>
-    // Gráfico de linha - Evolução diária das vendas
-    const datas = <?= json_encode(array_map(function($v){ return date('d/m', strtotime($v['data'])); }, $valores)) ?>;
-    const valoresDia = <?= json_encode(array_map('floatval', array_column($valores, 'total_valor'))) ?>;
-    const ctxLinha = document.getElementById('graficoLinha').getContext('2d');
-    new Chart(ctxLinha, {
+    <?php if(!empty($valores)): ?>
+    // Preparar dados para o gráfico
+    const labels = <?= json_encode(array_map(function($v){ return date('d/m', strtotime($v['data'])); }, array_reverse($valores))) ?>;
+    const dataValores = <?= json_encode(array_map('floatval', array_column(array_reverse($valores), 'total_valor'))) ?>;
+    const dataPedidos = <?= json_encode(array_map('intval', array_column(array_reverse($valores), 'total_pedidos'))) ?>;
+    const dataTicketMedio = <?= json_encode(array_map(function($v) {
+        return $v['total_pedidos'] > 0 ? round($v['total_valor'] / $v['total_pedidos'], 2) : 0;
+    }, array_reverse($valores))) ?>;
+
+    // Gráfico de Linha (Evolução)
+    const ctxEvolucao = document.getElementById('graficoEvolucao').getContext('2d');
+    new Chart(ctxEvolucao, {
         type: 'line',
         data: {
-            labels: datas,
+            labels: labels,
             datasets: [{
-                label: 'Valor Recebido (R$)',
-                data: valoresDia,
+                label: 'Faturamento (R$)',
+                data: dataValores,
                 fill: true,
-                backgroundColor: 'rgba(54, 162, 235, 0.1)',
-                borderColor: '#4f8cff',
+                backgroundColor: 'rgba(38, 222, 129, 0.1)',
+                borderColor: 'rgba(38, 222, 129, 1)',
                 tension: 0.4,
-                pointBackgroundColor: '#4f8cff',
+                pointBackgroundColor: 'rgba(38, 222, 129, 1)',
                 pointRadius: 5
             }]
         },
         options: {
             responsive: true,
-            plugins: {
-                legend: { display: false },
-                title: { display: false }
-            },
-            animation: { duration: 1200, easing: 'easeInOutQuart' },
+            plugins: { legend: { display: false } },
             scales: {
                 y: {
                     beginAtZero: true,
-                    ticks: {
-                        callback: function(value) {
-                            return 'R$ ' + value.toLocaleString('pt-BR');
-                        }
-                    }
+                    ticks: { callback: function(value) { return 'R$ ' + value.toLocaleString('pt-BR'); } }
                 }
             }
         }
     });
-    // Gráfico de barras - Vendas por dia
-    const ctxBarra = document.getElementById('graficoBarra').getContext('2d');
-    new Chart(ctxBarra, {
+
+    // Gráfico de Pizza (Distribuição)
+    const ctxDistribuicao = document.getElementById('graficoDistribuicao').getContext('2d');
+    new Chart(ctxDistribuicao, {
+        type: 'pie',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Faturamento (R$)',
+                data: dataValores,
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.7)',
+                    'rgba(54, 162, 235, 0.7)',
+                    'rgba(255, 206, 86, 0.7)',
+                    'rgba(75, 192, 192, 0.7)',
+                    'rgba(153, 102, 255, 0.7)',
+                    'rgba(255, 159, 64, 0.7)'
+                ],
+                borderColor: '#fff',
+                borderWidth: 2
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'bottom',
+                }
+            }
+        }
+    });
+
+    // Gráfico de Barras (Pedidos)
+    const ctxPedidos = document.getElementById('graficoPedidos').getContext('2d');
+    new Chart(ctxPedidos, {
         type: 'bar',
         data: {
-            labels: datas,
+            labels: labels,
             datasets: [{
-                label: 'Valor Recebido (R$)',
-                data: valoresDia,
-                backgroundColor: 'rgba(54, 162, 235, 0.7)',
-                borderColor: 'rgba(54, 162, 235, 1)',
+                label: 'Nº de Pedidos',
+                data: dataPedidos,
+                backgroundColor: 'rgba(96, 165, 250, 0.7)',
+                borderColor: 'rgba(96, 165, 250, 1)',
                 borderWidth: 2,
                 borderRadius: 8
             }]
         },
         options: {
             responsive: true,
-            plugins: {
-                legend: { display: false },
-                title: { display: false }
-            },
-            animation: { duration: 1200, easing: 'easeOutBounce' },
+            plugins: { legend: { display: false } },
+            scales: { y: { beginAtZero: true } }
+        }
+    });
+
+    // Gráfico de Linha (Ticket Médio)
+    const ctxTicketMedio = document.getElementById('graficoTicketMedio').getContext('2d');
+    new Chart(ctxTicketMedio, {
+        type: 'line',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Ticket Médio (R$)',
+                data: dataTicketMedio,
+                backgroundColor: 'rgba(248, 113, 113, 0.1)',
+                borderColor: 'rgba(248, 113, 113, 1)',
+                tension: 0.4,
+                pointBackgroundColor: 'rgba(248, 113, 113, 1)',
+                pointRadius: 5
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: { legend: { display: false } },
             scales: {
                 y: {
                     beginAtZero: true,
-                    ticks: {
-                        callback: function(value) {
-                            return 'R$ ' + value.toLocaleString('pt-BR');
-                        }
-                    }
+                    ticks: { callback: function(value) { return 'R$ ' + value.toLocaleString('pt-BR'); } }
                 }
             }
         }
     });
+    <?php endif; ?>
+
     function exportarPDF() {
-        const main = document.getElementById('relatorio-main-valor');
-        const opt = {
-            margin:       0.2,
-            filename:     'relatorio_valor_por_dia.pdf',
-            image:        { type: 'jpeg', quality: 0.98 },
-            html2canvas:  { scale: 2, useCORS: true, logging: true },
-            jsPDF:        { unit: 'in', format: 'a4', orientation: 'landscape' }
-        };
-        html2pdf().set(opt).from(main).save();
+        const main = document.getElementById('relatorio-main');
+        html2pdf().set({
+            margin: 0.2,
+            filename: 'relatorio_valor_por_dia.pdf',
+            image: { type: 'jpeg', quality: 0.98 },
+            html2canvas: { scale: 2, useCORS: true },
+            jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }
+        }).from(main).save();
     }
+
     function exportarCSV() {
-        let csv = '';
-        const rows = document.querySelectorAll('.dashboard-card table tr');
-        for (let row of rows) {
-            let cols = row.querySelectorAll('th,td');
-            let rowData = [];
-            for (let col of cols) {
-                rowData.push('"'+col.innerText.replace(/"/g, '""')+'"');
+        let csv = 'Data,Total Pedidos,Valor Total (R$)\n';
+        const rows = document.querySelectorAll('#tabela-detalhes tbody tr');
+        rows.forEach(row => {
+            if (row.querySelectorAll('td').length > 1) {
+                let rowData = [];
+                row.querySelectorAll('td').forEach(col => {
+                    rowData.push(`"${col.innerText.replace(/"/g, '""')}"`);
+                });
+                csv += rowData.join(',') + '\n';
             }
-            csv += rowData.join(',') + '\n';
-        }
-        const blob = new Blob([csv], { type: 'text/csv' });
-        const url = window.URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = 'relatorio_valor_por_dia.csv';
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-        window.URL.revokeObjectURL(url);
+        });
+        
+        const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+        const link = document.createElement("a");
+        const url = URL.createObjectURL(blob);
+        link.setAttribute("href", url);
+        link.setAttribute("download", "relatorio_valor_por_dia.csv");
+        link.style.visibility = 'hidden';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
     }
 </script>
-<?php $this->load->view('templates/footer'); ?>
