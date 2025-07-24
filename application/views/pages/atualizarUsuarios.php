@@ -16,7 +16,7 @@
         </button>
       </div>
       <div class="modal-body">
-        <form action="<?= base_url()?>usuarioController/atualizar/<?=$usuario_logado['user_id']?>" method="post">
+        <form action="<?= base_url()?>usuarioController/atualizar/<?=$usuario_logado['user_id']?>" method="post" onsubmit="return validarFormularioCliente(this)">
             <div class="form-group">
                 <label for="nome" class="col-form-label" >id:</label>
                 <input type="text" class="form-control" name="user_id" value="<?php echo $usuario['user_id']?>" readonly>
