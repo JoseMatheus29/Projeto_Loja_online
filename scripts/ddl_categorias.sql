@@ -7,4 +7,4 @@ CREATE TABLE IF NOT EXISTS categorias (
 );
 
 -- Categoria exemplo
-INSERT INTO categorias (nome, descricao, status) VALUES ('Roupas', 'Vestuário em geral', 1), ('Calçados', 'Sapatos, tênis, sandálias', 1), ('Acessórios', 'Bolsas, cintos, etc.', 1);
+INSERT INTO categorias (nome, descricao, status) VALUES ('Roupas', 'Vestuario em geral', 1), ('Calcado', 'Sapatos, tenis, sandalias', 1), ('Acessorios', 'Bolsas, cintos, etc.', 1);
