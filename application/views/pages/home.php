@@ -39,7 +39,7 @@ $is_adm = ($usuario_logado && $usuario_logado['tipo'] == 'adm');
                         <img class="w-full h-64 object-cover" src="<?= base_url('assets/img/' . htmlspecialchars($produto['foto'])) ?>" alt="<?= htmlspecialchars($produto['nome']) ?>">
                         <div class="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
                             <?php if($produto['quantidade'] > 0): ?>
-                                <a href="<?= $usuario_logado ? base_url('carrinhoController/adicionarCarrinho/'.$produto['id'].'/'.$usuario_logado['user_id']) : base_url('usuarioController/login') ?>" class="text-white bg-primary px-4 py-2 rounded-md">Adicionar ao Carrinho</a>
+                                <a href="<?= $usuario_logado ? base_url('carrinhoController/adicionarCarrinho/'.$produto['id']) : base_url('usuarioController/login') ?>" class="text-white bg-primary px-4 py-2 rounded-md">Adicionar ao Carrinho</a>
                             <?php else: ?>
                                 <span class="text-white bg-red-500 px-4 py-2 rounded-md">Indisponível</span>
                             <?php endif; ?>
