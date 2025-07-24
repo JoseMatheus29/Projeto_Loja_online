@@ -17,7 +17,10 @@ class Categoria_model extends CI_Model {
         return $this->db->update('categorias', $data);
     }
     public function delete($id) {
+        $this->db->db_debug = false; 
         $this->db->where('id', $id);
-        return $this->db->delete('categorias');
+        $result = $this->db->delete('categorias');
+        $this->db->db_debug = true; 
+        return $result;
     }
 }
