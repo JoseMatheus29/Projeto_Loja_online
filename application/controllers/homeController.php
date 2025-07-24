@@ -12,9 +12,6 @@ class HomeController extends CI_Controller{
         $this->load->view('templates/navbar', $data);
 		$this->load->view('pages/home', $data);
         $this->load->view('templates/footer', $data);
-        $this->load->view('pages/atualizarProdutos', $data);
-
-
 	}
 } 
 
