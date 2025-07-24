@@ -44,6 +44,18 @@
                             <a class="nav-item nav-link" id="Entrar" href="<?= base_url() ?>usuarioController/login">Entrar</a>
                             <a class="nav-item nav-link" id="Cadastrar" href="<?= base_url() ?>usuarioController/cadastrarUsuario">Cadastrar-se</a>
                     <?php endif?>
+                    <?php if(isset($_SESSION['usuario_logado']) && $_SESSION['usuario_logado']['tipo'] == 'adm'): ?>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="relatoriosDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Relatórios
+                            </a>
+                            <div class="dropdown-menu text-black" aria-labelledby="relatoriosDropdown">
+                                <a class="text-black" href="<?= base_url() ?>RelatorioController/comprasPorCliente">Compras por Cliente</a>
+                                <a class="text-black" href="<?= base_url() ?>RelatorioController/produtosEmFalta">Produtos em Falta</a>
+                                <a class="text-black" href="<?= base_url() ?>RelatorioController/valorPorDia">Valor Recebido por Dia</a>
+                            </div>
+                        </li>
+                    <?php endif; ?>
                 </div>
             </div>
         </nav>

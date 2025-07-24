@@ -20,7 +20,7 @@ services:
     image: mysql:5.7
     container_name: loja_online_db
     ports:
-      - "3306:3306"
+      - "3310:3310"
     volumes:
       - db_data:/var/lib/mysql
     environment:
