@@ -5,7 +5,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class usuarioController extends CI_Controller{
 
     public function index(){
-        $id_usuario = $_GET['idUsuario'];
+        
+        if (isset($_SESSION['usuario_logado'])){
+            $data['usuario_logado'] = $_SESSION['usuario_logado'];
+        }else{
+            redirect(base_url());
+        }
 
         $this->load->model("usuarios_model");
         $this->load->model("pedidos_model");
@@ -16,8 +21,6 @@ class usuarioController extends CI_Controller{
 		$this->load->view('templates/navbar', $data);
 		$this->load->view('pages/usuarios', $data);
 		$this->load->view('templates/footer');
-		$this->load->view('pages/atualizarUsuarios');
-
     }
     public function login()
 	{  
@@ -43,17 +46,23 @@ class usuarioController extends CI_Controller{
         redirect(base_url());
     }
 
-    public function deletarUsuario($id, $id_usuario){
+    public function deletarUsuario($id){
         $this->load->model("usuarios_model");
-        $this->usuarios_model->deletar($id);
-        redirect(base_url().'/usuarioController/?idUsuario='.$id_usuario);
+        // Tenta deletar o usuário. O model retorna false em caso de erro.
+        if ($this->usuarios_model->deletar($id)) {
+            // Sucesso
+        } else {
+            // Falha, provavelmente por causa de chave estrangeira
+            $this->session->set_flashdata('delete_error', 'Não é possível excluir o usuário, pois ele possui pedidos vinculados.');
+        }
+        redirect(base_url('usuarioController'));
     }
 
-    public function atualizar($id_usuario){
+    public function atualizar(){
         $this->load->model("usuarios_model");
         $usuarioAtt = $_POST;
         $this->usuarios_model->atualizar($usuarioAtt);
-        redirect(base_url().'/usuarioController/?idUsuario='.$id_usuario);
+        redirect(base_url('usuarioController'));
 
     }
 

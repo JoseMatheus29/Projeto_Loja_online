@@ -14,8 +14,18 @@ class Usuarios_model extends CI_Model {
     }
         
     public function deletar($id){
+        // Guarda o estado atual do db_debug
+        $db_debug = $this->db->db_debug;
+        // Desativa o db_debug para a proxima query
+        $this->db->db_debug = FALSE;
+
         $this->db->where("user_id",$id);
-        return $this->db->delete("usuarios");  
+        $result = $this->db->delete("usuarios");
+
+        // Restaura o estado do db_debug
+        $this->db->db_debug = $db_debug;
+
+        return $result;
     }
 
     public function atualizar($usuario){
