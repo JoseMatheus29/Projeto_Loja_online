@@ -1,4 +1,4 @@
-<div class="container mx-auto px-4 sm:px-8 py-8" x-data="{ openModal: false, userToEdit: {} }">
+<div class="container mx-auto px-4 sm:px-8 py-8" x-data="{ openCreateModal: false, openEditModal: false, userToEdit: {} }">
     <div class="py-8">
         <div>
             <h2 class="text-2xl font-semibold leading-tight">Usuários</h2>
@@ -16,7 +16,7 @@
 
         <div class="my-2 flex sm:flex-row flex-col">
             <div class="flex flex-row mb-1 sm:mb-0">
-                <button @click="openModal = true" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded">
+                <button @click="openCreateModal = true" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded">
                     Novo Usuário
                 </button>
             </div>
@@ -83,7 +83,7 @@
                                     ?>
                                 </td>
                                 <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                                    <button @click="userToEdit = <?= htmlspecialchars(json_encode($usuario), ENT_QUOTES, 'UTF-8') ?>; openModal = true" class="text-indigo-600 hover:text-indigo-900 mr-5">
+                                    <button @click="userToEdit = <?= htmlspecialchars(json_encode($usuario), ENT_QUOTES, 'UTF-8') ?>; openEditModal = true" class="text-indigo-600 hover:text-indigo-900 mr-5">
                                         Editar
                                     </button>
                                     <a href="javascript:goDelete(<?= $usuario['user_id'] ?>)" class="text-red-600 hover:text-red-900">
@@ -99,13 +99,13 @@
     </div>
 
     <!-- Modal para Cadastro de Usuário -->
-    <div x-show="openModal" class="fixed z-10 inset-0 overflow-y-auto" style="display: none;">
+    <div x-show="openCreateModal" class="fixed z-10 inset-0 overflow-y-auto" style="display: none;">
         <div class="flex items-center justify-center min-h-screen px-4">
             <div class="fixed inset-0 transition-opacity" aria-hidden="true">
                 <div class="absolute inset-0 bg-gray-500 opacity-75"></div>
             </div>
             <div class="bg-white rounded-lg overflow-hidden shadow-xl transform transition-all sm:max-w-lg w-full p-8 relative">
-                <button @click="openModal = false" class="absolute top-2 right-2 text-gray-500 hover:text-gray-700 text-2xl">&times;</button>
+                <button @click="openCreateModal = false" class="absolute top-2 right-2 text-gray-500 hover:text-gray-700 text-2xl">&times;</button>
                 <h3 class="text-lg leading-6 font-medium text-gray-900 mb-4">Cadastrar Novo Usuário</h3>
                 <form action="<?= base_url() ?>UsuarioController/novoUsuario" method="post" class="space-y-6">
                     <div>
