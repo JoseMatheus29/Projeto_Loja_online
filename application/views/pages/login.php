@@ -7,7 +7,7 @@
         </div>
 
         <!-- Formulário de Login -->
-        <form action="<?= base_url('usuarioController/login') ?>" method="post" class="space-y-6">
+        <form action="<?= base_url('usuarioController/logar') ?>" method="post" class="space-y-6">
             <!-- Campo de Email -->
             <div>
                 <label for="email" class="block text-sm font-medium text-gray-700">Email</label>

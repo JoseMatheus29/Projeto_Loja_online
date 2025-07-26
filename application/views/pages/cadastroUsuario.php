@@ -4,7 +4,7 @@
             Crie sua conta
         </h2>
         <p class="mt-2 text-center text-sm text-gray-600">
-            Ou <a href="<?= base_url() ?>login" class="font-medium text-indigo-600 hover:text-indigo-500">faça login</a> se já possui uma conta
+            Ou <a href="<?= base_url() ?>usuarioController/login" class="font-medium text-indigo-600 hover:text-indigo-500">faça login</a> se já possui uma conta
         </p>
     </div>
 
