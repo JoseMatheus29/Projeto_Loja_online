@@ -144,7 +144,7 @@ class Migration extends CI_Controller {
             ['user_id' => 16, 'nome' => 'Fernanda Almeida', 'email' => 'fernanda.almeida@example.com', 'telefone' => 555555555, 'carrinho' => null, 'tipo' => 'cliente', 'logado' => 0, 'senha' => ''],
             ['user_id' => 17, 'nome' => 'Ricardo Martins', 'email' => 'ricardo.martins@example.com', 'telefone' => 666666666, 'carrinho' => null, 'tipo' => 'cliente', 'logado' => 0, 'senha' => ''],
             ['user_id' => 18, 'nome' => 'Camila Lima', 'email' => 'camila.lima@example.com', 'telefone' => 777777777, 'carrinho' => null, 'tipo' => 'cliente', 'logado' => 0, 'senha' => ''],
-            ['user_id' => 1, 'nome' => 'admin', 'email' => 'admin@admin.com', 'telefone' => 999999999, 'carrinho' => null, 'tipo' => 'adm', 'logado' => 0, 'senha' => 'admin123'],
+            ['user_id' => 1, 'nome' => 'admin', 'email' => 'admin@admin.com', 'telefone' => 999999999, 'carrinho' => null, 'tipo' => 'adm', 'logado' => 0, 'senha' => '0192023a7bbd73250516f069df18b500'], // senha: admin123 (md5)
             ['user_id' => 31, 'nome' => 'José Matheus', 'email' => 'mateus.alvino.101@gmail.com', 'telefone' => 2147483647, 'carrinho' => null, 'tipo' => 'adm', 'logado' => 0, 'senha' => '732002cec7aeb7987bde842b9e00ee3b'],
             ['user_id' => 32, 'nome' => 'José Matheus', 'email' => 'mateus.alvino.100@gmail.com', 'telefone' => 2147483647, 'carrinho' => '[[],[{\"id_produto\":\"17\",\"idUsuario\":\"32\"}]]', 'tipo' => 'cliente', 'logado' => 0, 'senha' => '732002cec7aeb7987bde842b9e00ee3b'],
             ['user_id' => 33, 'nome' => 'Matheus', 'email' => 'mateusteste@gmail.com', 'telefone' => 2147483647, 'carrinho' => null, 'tipo' => 'estoquista', 'logado' => 0, 'senha' => '732002cec7aeb7987bde842b9e00ee3b'],
