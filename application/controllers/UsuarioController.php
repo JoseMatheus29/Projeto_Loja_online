@@ -59,8 +59,8 @@ class usuarioController extends CI_Controller{
             $this->session->set_flashdata('delete_success', 'Usuário excluído com sucesso.');
             redirect(base_url('usuarioController'));
         } else {
-            // Exibe toast de erro sem redirecionar
-            echo "<script>window.parent.showToast('Não é possível excluir o usuário, pois ele possui pedidos vinculados.', 'error');</script>";
+            // Retorna JS para exibir o mesmo toast de erro do cancelamento
+            echo "<script>showToast('Registro não alterado', 'error');</script>";
             exit;
         }
     }
