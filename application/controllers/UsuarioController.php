@@ -15,12 +15,12 @@ class usuarioController extends CI_Controller{
         $this->load->model("usuarios_model");
         $this->load->model("pedidos_model");
         $data['pedidos'] = $this->pedidos_model->todosPedidos();
-		$data["usuarios"] = $this->usuarios_model->index();
-		$data["title"] = 'Usuarios';
-		$this->load->view('templates/header', $data);
-		$this->load->view('templates/navbar', $data);
-		$this->load->view('pages/usuarios', $data);
-		$this->load->view('templates/footer');
+        $data["usuarios"] = $this->usuarios_model->index();
+        $data["title"] = 'Usuarios';
+        $this->load->view('templates/header', $data);
+        $this->load->view('templates/navbar', $data);
+        $this->load->view('pages/usuarios', $data);
+        $this->load->view('templates/footer');
     }
     public function login()
     {  
@@ -35,7 +35,7 @@ class usuarioController extends CI_Controller{
         $data['title'] = "Cadastro";
         $this->load->view('templates/header', $data);
         $this->load->view('templates/navbar', $data);
-		$this->load->view('pages/cadastroUsuario', $data);
+        $this->load->view('pages/cadastroUsuario', $data);
     }
 
     public function novoUsuario(){
@@ -56,10 +56,12 @@ class usuarioController extends CI_Controller{
     public function deletarUsuario($id){
         $this->load->model("usuarios_model");
         if ($this->usuarios_model->deletar($id)) {
+            $this->session->set_flashdata('delete_success', 'Usuário excluído com sucesso.');
+            redirect(base_url('usuarioController'));
         } else {
             $this->session->set_flashdata('delete_error', 'Não é possível excluir o usuário, pois ele possui pedidos vinculados.');
+            redirect(base_url('usuarioController'));
         }
-        redirect(base_url('usuarioController'));
     }
 
     public function atualizar(){
