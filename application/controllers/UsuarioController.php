@@ -57,7 +57,6 @@ class usuarioController extends CI_Controller{
         $this->load->model("usuarios_model");
         if ($this->usuarios_model->deletar($id)) {
             $this->session->set_flashdata('delete_success', 'Usuário excluído com sucesso.');
-            redirect(base_url('usuarioController'));
         } else {
             $this->session->set_flashdata('error', 'Erro ao deletar o usuario. Verifique se ele não está associado a um pedido.');
         }
