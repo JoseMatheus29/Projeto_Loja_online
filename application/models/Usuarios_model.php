@@ -7,7 +7,10 @@ class Usuarios_model extends CI_Model {
         return $this->db->get("usuarios")->result_array();
     }
 
-
+    public function email_existe($email) {
+        $this->db->where('email', $email);
+        return $this->db->get('usuarios')->num_rows() > 0;
+    }
 
     public function novo($usuarios){
         $this->db->insert('usuarios', $usuarios);

@@ -42,7 +42,14 @@ class usuarioController extends CI_Controller{
         $usuario = $_POST;
         $usuario['senha'] = md5($usuario['senha']);
         $this->load->model("usuarios_model");
-        $this->usuarios_model->novo($usuario);
+        if ($this->Usuarios_model->email_existe($usuario['email'])) {
+            $this->session->set_flashdata('erro', 'E-mail já cadastrado!');
+             redirect(base_url('usuarioController'));
+        } else {
+            $this->Usuarios_model->novo($usuario);
+             $this->usuarios_model->novo($usuario);
+        
+        }
         redirect(base_url());
     }
 
