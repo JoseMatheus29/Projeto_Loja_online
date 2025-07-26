@@ -4,7 +4,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Migration extends CI_Controller {
     
     public function index() {
-        echo "<h1>🚀 Migração de Banco de Dados - JM Commerce (MySQL)</h1>";
+        echo "<h1>🚀 Migração de Banco de Dados - JM Commerce (PostgreSQL)</h1>";
         
         // Testa a conexão
         if (!$this->db->conn_id) {
@@ -35,70 +35,49 @@ class Migration extends CI_Controller {
     }
     
     public function run() {
-        echo "<h1>🔧 Executando Migração para MySQL...</h1>";
+        echo "<h1>🔧 Executando Migração para PostgreSQL...</h1>";
         
         try {
-            // SQL para MySQL, baseado nos arquivos ddl.sql e ddl_categorias.sql
+            // SQL para PostgreSQL, traduzido da estrutura original do MySQL
             $sql_structure = "
-            CREATE TABLE `pedidos` (
-              `id` int(64) NOT NULL,
-              `id_produtos` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
-              `id_usuario` int(64) NOT NULL,
-              `status` varchar(64) NOT NULL,
-              `data_entrega` date DEFAULT NULL,
-              `valor` int(64) NOT NULL
-            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+            CREATE TABLE usuarios (
+                user_id SERIAL PRIMARY KEY,
+                nome VARCHAR(64) NOT NULL,
+                email VARCHAR(64) NOT NULL UNIQUE,
+                telefone BIGINT NOT NULL,
+                carrinho TEXT DEFAULT NULL,
+                tipo VARCHAR(10) NOT NULL DEFAULT 'cliente',
+                logado SMALLINT NOT NULL,
+                senha VARCHAR(255) NOT NULL
+            );
 
-            CREATE TABLE `produtos` (
-              `id` int(11) NOT NULL,
-              `nome` varchar(255) NOT NULL,
-              `tamanho` varchar(5) NOT NULL,
-              `valor` float NOT NULL,
-              `descricao` text NOT NULL,
-              `quantidade` int(11) UNSIGNED NOT NULL,
-              `foto` varchar(255) NOT NULL,
-              `status` tinyint(1) NOT NULL
-            ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+            CREATE TABLE pedidos (
+                id SERIAL PRIMARY KEY,
+                id_produtos TEXT NOT NULL,
+                id_usuario INTEGER NOT NULL,
+                status VARCHAR(64) NOT NULL,
+                data_entrega DATE DEFAULT NULL,
+                valor INTEGER NOT NULL,
+                CONSTRAINT fk_usuario FOREIGN KEY (id_usuario) REFERENCES usuarios(user_id)
+            );
 
-            CREATE TABLE `usuarios` (
-              `user_id` int(255) NOT NULL,
-              `nome` varchar(64) NOT NULL,
-              `email` varchar(64) NOT NULL,
-              `telefone` int(11) NOT NULL,
-              `carrinho` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL,
-              `tipo` varchar(10) NOT NULL DEFAULT 'cliente',
-              `logado` tinyint(1) NOT NULL,
-              `senha` varchar(255) NOT NULL
-            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+            CREATE TABLE produtos (
+                id SERIAL PRIMARY KEY,
+                nome VARCHAR(255) NOT NULL,
+                tamanho VARCHAR(5) NOT NULL,
+                valor DECIMAL(10, 2) NOT NULL,
+                descricao TEXT NOT NULL,
+                quantidade INTEGER NOT NULL,
+                foto VARCHAR(255) NOT NULL,
+                status SMALLINT NOT NULL
+            );
 
-            CREATE TABLE IF NOT EXISTS `categorias` (
-                `id` INT AUTO_INCREMENT PRIMARY KEY,
-                `nome` VARCHAR(100) NOT NULL,
-                `descricao` TEXT,
-                `status` TINYINT(1) DEFAULT 1
-            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
-            ALTER TABLE `pedidos`
-              ADD PRIMARY KEY (`id`),
-              ADD KEY `id_usuario` (`id_usuario`);
-
-            ALTER TABLE `produtos`
-              ADD PRIMARY KEY (`id`);
-
-            ALTER TABLE `usuarios`
-              ADD PRIMARY KEY (`user_id`);
-
-            ALTER TABLE `pedidos`
-              MODIFY `id` int(64) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
-
-            ALTER TABLE `produtos`
-              MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
-
-            ALTER TABLE `usuarios`
-              MODIFY `user_id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=38;
-
-            ALTER TABLE `pedidos`
-              ADD CONSTRAINT `pedidos_ibfk_1` FOREIGN KEY (`id_usuario`) REFERENCES `usuarios` (`user_id`);
+            CREATE TABLE categorias (
+                id SERIAL PRIMARY KEY,
+                nome VARCHAR(100) NOT NULL,
+                descricao TEXT,
+                status SMALLINT DEFAULT 1
+            );
             ";
             
             // Executa a estrutura
@@ -125,12 +104,7 @@ class Migration extends CI_Controller {
     private function insert_initial_data() {
         // Limpa tabelas para evitar duplicatas, se necessário.
         // CUIDADO: Isso apaga todos os dados existentes.
-        $this->db->query('SET FOREIGN_KEY_CHECKS = 0');
-        $this->db->truncate('pedidos');
-        $this->db->truncate('produtos');
-        $this->db->truncate('usuarios');
-        $this->db->truncate('categorias');
-        $this->db->query('SET FOREIGN_KEY_CHECKS = 1');
+        $this->db->query('TRUNCATE TABLE pedidos, produtos, usuarios, categorias RESTART IDENTITY CASCADE;');
         echo "<p style='color: orange;'>⚠️ Tabelas existentes foram limpas.</p>";
 
         // Insere dados em 'usuarios'
