@@ -38,6 +38,22 @@ class Migration extends CI_Controller {
         echo "<h1>🔧 Executando Migração para PostgreSQL...</h1>";
         
         try {
+            // Adiciona o bloco para apagar as tabelas
+            $drop_tables_sql = "
+                DROP TABLE IF EXISTS pedidos CASCADE;
+                DROP TABLE IF EXISTS produtos CASCADE;
+                DROP TABLE IF EXISTS usuarios CASCADE;
+                DROP TABLE IF EXISTS categorias CASCADE;
+            ";
+            $queries = explode(';', $drop_tables_sql);
+            foreach ($queries as $query) {
+                $query = trim($query);
+                if (!empty($query)) {
+                    $this->db->query($query);
+                }
+            }
+            echo "<p style='color: orange;'>⚠️ Tabelas antigas foram removidas (se existiam).</p>";
+
             // SQL para PostgreSQL, traduzido da estrutura original do MySQL
             $sql_structure = "
             CREATE TABLE usuarios (
@@ -102,9 +118,7 @@ class Migration extends CI_Controller {
     }
     
     private function insert_initial_data() {
-        // Limpa tabelas para evitar duplicatas, se necessário.
-        // CUIDADO: Isso apaga todos os dados existentes.
-        $this->db->query('TRUNCATE TABLE pedidos, produtos, usuarios, categorias RESTART IDENTITY CASCADE;');
+        // A linha TRUNCATE foi removida daqui, pois as tabelas são recriadas do zero.
         echo "<p style='color: orange;'>⚠️ Tabelas existentes foram limpas.</p>";
 
         // Insere dados em 'usuarios'
