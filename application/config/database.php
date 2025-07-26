@@ -8,7 +8,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | Configuração que suporta tanto MySQL quanto PostgreSQL
 */
 
-$active_group = 'default';
+$active_group = 'postgresql';
 $query_builder = TRUE;
 
 // Detecta o tipo de banco baseado na variável de ambiente
