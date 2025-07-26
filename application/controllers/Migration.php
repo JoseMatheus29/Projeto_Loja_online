@@ -95,6 +95,7 @@ class Migration extends CI_Controller {
                 tamanho VARCHAR(5) NOT NULL,
                 valor DECIMAL(10, 2) NOT NULL,
                 descricao TEXT NOT NULL,
+                cor VARCHAR(50),
                 quantidade INTEGER NOT NULL,
                 foto VARCHAR(255) NOT NULL,
                 status SMALLINT NOT NULL,
