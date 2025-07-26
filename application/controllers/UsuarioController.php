@@ -60,12 +60,18 @@ class usuarioController extends CI_Controller{
         } else {
             $this->session->set_flashdata('error', 'Erro ao deletar o usuario. Verifique se ele não está associado a um pedido.');
         }
+        redirect('usuarioController');
+
     }
 
     public function atualizar(){
         $this->load->model("usuarios_model");
         $usuarioAtt = $_POST;
-        $this->usuarios_model->atualizar($usuarioAtt);
+        if ($this->usuarios_model->atualizar($usuarioAtt)) {
+            $this->session->set_flashdata('update_success', 'Usuário atualizado com sucesso.');
+        } else {
+            $this->session->set_flashdata('error', 'Erro ao atualizar o usuário.');
+        }
         redirect(base_url('usuarioController'));
 
     }
