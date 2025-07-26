@@ -14,6 +14,7 @@ $route['translate_uri_dashes'] = FALSE;
 
 // Rota de teste
 $route['teste'] = 'TestController/index';
+$route['teste-home'] = 'HomeController/teste';
 
 // Rota de migração
 $route['migration'] = 'migration/index';

@@ -23,13 +23,13 @@ class usuarioController extends CI_Controller{
 		$this->load->view('templates/footer');
     }
     public function login()
-	{  
+    {  
         $data['title'] = "Login";
         $this->load->view('templates/header', $data);
         $this->load->view('templates/navbar', $data);
-		$this->load->view('pages/login', $data);
-
-	}
+        $this->load->view('pages/login', $data);
+        $this->load->view('templates/footer');
+    }
 
     public function cadastrarUsuario(){
         $data['title'] = "Cadastro";

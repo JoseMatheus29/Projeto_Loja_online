@@ -14,22 +14,29 @@ class ProdutoController extends CI_Controller{
     }
     public function index()
     {
-        if (!isset($_SESSION['usuario_logado'])) {
-            redirect(base_url('index.php/usuarioController/login'));
-            return;
+        try {
+            if (!isset($_SESSION['usuario_logado'])) {
+                redirect(base_url('usuarioController/login'));
+                return;
+            }
+            $data['usuario_logado'] = $_SESSION['usuario_logado'];
+
+            $this->load->model('produtos_model');
+            $data['produtos'] = $this->produtos_model->index();
+            $data['title'] = "Gerenciamento de Produtos";
+            $this->load->model('categoria_model');
+            $data['categorias'] = $this->categoria_model->getAll();
+
+            $this->load->view('templates/header', $data);
+            $this->load->view('templates/navbar', $data);
+            $this->load->view('pages/produtos_list', $data);
+            $this->load->view('templates/footer.php', $data);
+            
+        } catch (Exception $e) {
+            echo "<h1>Erro no ProdutoController</h1>";
+            echo "<p>Erro: " . $e->getMessage() . "</p>";
+            echo "<p><a href='" . base_url('teste') . "'>Voltar ao teste</a></p>";
         }
-        $data['usuario_logado'] = $_SESSION['usuario_logado'];
-
-        $this->load->model('produtos_model');
-        $data['produtos'] = $this->produtos_model->index();
-        $data['title'] = "Gerenciamento de Produtos";
-        $this->load->model('categoria_model');
-        $data['categorias'] = $this->categoria_model->getAll();
-
-        $this->load->view('templates/header', $data);
-        $this->load->view('templates/navbar', $data);
-        $this->load->view('pages/produtos_list', $data);
-        $this->load->view('templates/footer.php', $data);
     }
 
 

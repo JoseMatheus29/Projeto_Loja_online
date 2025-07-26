@@ -11,8 +11,9 @@ class TestController extends CI_Controller {
         
         echo "<h3>🔗 Links de Teste:</h3>";
         echo "<ul>";
-        echo "<li><a href='" . base_url() . "'>🏠 Home</a></li>";
-        echo "<li><a href='" . base_url('HomeController') . "'>🏠 HomeController</a></li>";
+        echo "<li><a href='" . base_url() . "'>🏠 Home (raiz)</a></li>";
+        echo "<li><a href='" . base_url('HomeController') . "'>🏠 HomeController direto</a></li>";
+        echo "<li><a href='" . base_url('HomeController/teste') . "'>🧪 HomeController teste</a></li>";
         echo "<li><a href='" . base_url('usuarioController/login') . "'>👤 Login</a></li>";
         echo "<li><a href='" . base_url('ProdutoController') . "'>📦 Produtos</a></li>";
         echo "<li><a href='" . base_url('RelatorioController') . "'>📊 Relatórios</a></li>";
