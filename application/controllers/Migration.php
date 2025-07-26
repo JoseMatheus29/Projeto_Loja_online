@@ -98,7 +98,7 @@ class Migration extends CI_Controller {
                 cor VARCHAR(50),
                 quantidade INTEGER NOT NULL,
                 foto VARCHAR(255) NOT NULL,
-                status SMALLINT NOT NULL,
+                status SMALLINT NOT NULL DEFAULT 0,
                 categoria_id INTEGER,
                 CONSTRAINT fk_categoria FOREIGN KEY (categoria_id) REFERENCES categorias(id) ON DELETE SET NULL
             );
