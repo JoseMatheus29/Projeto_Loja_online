@@ -212,22 +212,17 @@
     }
     function goDelete(id) {
         var myUrl = '<?= base_url("usuarioController/deletarUsuario") ?>/' + id;
-        if (confirm('Deseja realmente apagar esse registro?')) {
-            // Ajax para não redirecionar
-            fetch(myUrl, { method: 'GET', credentials: 'same-origin' })
-                .then(response => response.text())
-                .then(html => {
-                    if (html.includes('showToast')) {
-                        eval(html);
-                    } else {
-                        showToast('Usuário excluído com sucesso.');
-                        setTimeout(() => { location.reload(); }, 1200);
-                    }
-                });
-        } else {
-            showToast("Registro não alterado", 'error');
-            return false;
-        }
+        // Ajax para não redirecionar
+        fetch(myUrl, { method: 'GET', credentials: 'same-origin' })
+            .then(response => response.text())
+            .then(html => {
+                if (html.includes('showToast')) {
+                    eval(html);
+                } else {
+                    showToast('Usuário excluído com sucesso.');
+                    setTimeout(() => { location.reload(); }, 1200);
+                }
+            });
     }
 </script>
 
