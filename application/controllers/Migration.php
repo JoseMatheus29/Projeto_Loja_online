@@ -67,6 +67,13 @@ class Migration extends CI_Controller {
                 senha VARCHAR(255) NOT NULL
             );
 
+            CREATE TABLE categorias (
+                id SERIAL PRIMARY KEY,
+                nome VARCHAR(100) NOT NULL,
+                descricao TEXT,
+                status SMALLINT DEFAULT 1
+            );
+
             CREATE TABLE pedidos (
                 id SERIAL PRIMARY KEY,
                 id_produtos TEXT NOT NULL,
@@ -88,13 +95,6 @@ class Migration extends CI_Controller {
                 status SMALLINT NOT NULL,
                 categoria_id INTEGER,
                 CONSTRAINT fk_categoria FOREIGN KEY (categoria_id) REFERENCES categorias(id) ON DELETE SET NULL
-            );
-
-            CREATE TABLE categorias (
-                id SERIAL PRIMARY KEY,
-                nome VARCHAR(100) NOT NULL,
-                descricao TEXT,
-                status SMALLINT DEFAULT 1
             );
             ";
             
