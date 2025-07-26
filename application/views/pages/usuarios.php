@@ -191,7 +191,10 @@
     </div>
 
     <!-- Modal para Edição de Usuário -->
+<!-- Modal para Edição de Usuário -->
+<div x-show="openEditModal" style="display: none;">
     <?php $this->load->view('pages/atualizarUsuarios'); ?>
+</div>
 </div>
 
 <script>
