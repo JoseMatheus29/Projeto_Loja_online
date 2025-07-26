@@ -63,7 +63,7 @@ class Migration extends CI_Controller {
                 telefone BIGINT NOT NULL,
                 carrinho TEXT DEFAULT NULL,
                 tipo VARCHAR(10) NOT NULL DEFAULT 'cliente',
-                logado SMALLINT NOT NULL,
+                logado SMALLINT NOT NULL DEFAULT 0,
                 senha VARCHAR(255) NOT NULL
             );
 
