@@ -71,7 +71,7 @@ class ProdutoController extends CI_Controller{
 
         $config['upload_path'] = './assets/img/';
         $config['allowed_types'] = 'gif|jpg|png|jpeg';
-        $config['max_size'] = 2048; // 2MB
+        $config['max_size'] = 2048; 
 
         $this->load->library('upload', $config);
 

@@ -6,7 +6,7 @@ class CategoriaController extends CI_Controller
         parent::__construct();
         $this->load->model('categoria_model');
         if (!isset($_SESSION['usuario_logado']) || $_SESSION['usuario_logado']['tipo'] != 'adm') {
-            $this->session->set_flashdata('error', 'Você não tem permissão para acessar esta página.');
+            $this->session->set_flashdata('error', 'Você não tem permissão para acessar esta página');
             redirect(base_url());
         }
     }

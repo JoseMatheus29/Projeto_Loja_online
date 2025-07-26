@@ -12,7 +12,6 @@ class RelatorioController extends CI_Controller {
         }
     }
 
-    // Relatório: Total de compras por cliente
     public function comprasPorCliente() {
         $data["title"] = 'Compra por Cliente';
 
@@ -22,7 +21,6 @@ class RelatorioController extends CI_Controller {
         $this->load->view('templates/footer');
     }
 
-    // Relatório: Produtos em falta no estoque
     public function produtosEmFalta() {
         $data["title"] = 'Produtos em Falta';
 
@@ -32,7 +30,6 @@ class RelatorioController extends CI_Controller {
         $this->load->view('templates/footer');
     }
 
-    // Relatório: Total de valor recebido por dia
     public function valorPorDia() {
         $data["title"] = 'Valor por dia';
 

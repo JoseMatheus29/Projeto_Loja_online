@@ -48,11 +48,8 @@ class usuarioController extends CI_Controller{
 
     public function deletarUsuario($id){
         $this->load->model("usuarios_model");
-        // Tenta deletar o usuário. O model retorna false em caso de erro.
         if ($this->usuarios_model->deletar($id)) {
-            // Sucesso
         } else {
-            // Falha, provavelmente por causa de chave estrangeira
             $this->session->set_flashdata('delete_error', 'Não é possível excluir o usuário, pois ele possui pedidos vinculados.');
         }
         redirect(base_url('usuarioController'));

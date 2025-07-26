@@ -9,7 +9,6 @@ class CarrinhoController extends CI_Controller {
         $this->load->model("usuarios_model");
         $this->load->model("produtos_model");
         $this->load->library('user_agent');
-        // Redireciona se o usuário não estiver logado
         if (!$this->session->userdata('usuario_logado')) {
             $this->session->set_flashdata('danger', 'Você precisa estar logado para acessar o carrinho.');
             redirect('usuarioController/login');
