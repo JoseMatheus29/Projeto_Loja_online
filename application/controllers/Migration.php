@@ -4,12 +4,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Migration extends CI_Controller {
     
     public function index() {
-        echo "<h1>🚀 Migração de Banco de Dados - JM Commerce</h1>";
+        echo "<h1>🚀 Migração de Banco de Dados - JM Commerce (MySQL)</h1>";
         
         // Testa a conexão
         if (!$this->db->conn_id) {
             echo "<p style='color: red;'>❌ Erro: Não foi possível conectar ao banco de dados.</p>";
-            echo "<p>Verifique as configurações no arquivo .env</p>";
+            echo "<p>Verifique as configurações no arquivo de configuração do banco de dados.</p>";
             return;
         }
         
@@ -30,80 +30,75 @@ class Migration extends CI_Controller {
                 echo "<li>$table</li>";
             }
             echo "</ul>";
-            echo "<p style='color: green;'>✅ Banco de dados já configurado!</p>";
+            echo "<p style='color: green;'>✅ Banco de dados já parece estar configurado!</p>";
         }
     }
     
     public function run() {
-        echo "<h1>🔧 Executando Migração...</h1>";
+        echo "<h1>🔧 Executando Migração para MySQL...</h1>";
         
         try {
-            // SQL para PostgreSQL
+            // SQL para MySQL, baseado nos arquivos ddl.sql e ddl_categorias.sql
             $sql_structure = "
-            -- Tabela de Categorias
-            CREATE TABLE IF NOT EXISTS categorias (
-                id SERIAL PRIMARY KEY,
-                nome VARCHAR(100) NOT NULL,
-                descricao TEXT,
-                ativo BOOLEAN DEFAULT TRUE,
-                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-            );
+            CREATE TABLE `pedidos` (
+              `id` int(64) NOT NULL,
+              `id_produtos` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
+              `id_usuario` int(64) NOT NULL,
+              `status` varchar(64) NOT NULL,
+              `data_entrega` date DEFAULT NULL,
+              `valor` int(64) NOT NULL
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
-            -- Tabela de Usuários
-            CREATE TABLE IF NOT EXISTS usuarios (
-                id SERIAL PRIMARY KEY,
-                nome VARCHAR(150) NOT NULL,
-                email VARCHAR(150) UNIQUE NOT NULL,
-                senha VARCHAR(255) NOT NULL,
-                tipo_usuario VARCHAR(20) DEFAULT 'cliente',
-                ativo BOOLEAN DEFAULT TRUE,
-                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-            );
+            CREATE TABLE `produtos` (
+              `id` int(11) NOT NULL,
+              `nome` varchar(255) NOT NULL,
+              `tamanho` varchar(5) NOT NULL,
+              `valor` float NOT NULL,
+              `descricao` text NOT NULL,
+              `quantidade` int(11) UNSIGNED NOT NULL,
+              `foto` varchar(255) NOT NULL,
+              `status` tinyint(1) NOT NULL
+            ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
-            -- Tabela de Produtos
-            CREATE TABLE IF NOT EXISTS produtos (
-                id SERIAL PRIMARY KEY,
-                nome VARCHAR(200) NOT NULL,
-                descricao TEXT,
-                preco DECIMAL(10,2) NOT NULL DEFAULT 0.00,
-                quantidade INTEGER DEFAULT 0,
-                categoria_id INTEGER REFERENCES categorias(id) ON DELETE SET NULL,
-                foto VARCHAR(255),
-                ativo BOOLEAN DEFAULT TRUE,
-                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-            );
+            CREATE TABLE `usuarios` (
+              `user_id` int(255) NOT NULL,
+              `nome` varchar(64) NOT NULL,
+              `email` varchar(64) NOT NULL,
+              `telefone` int(11) NOT NULL,
+              `carrinho` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL,
+              `tipo` varchar(10) NOT NULL DEFAULT 'cliente',
+              `logado` tinyint(1) NOT NULL,
+              `senha` varchar(255) NOT NULL
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
-            -- Tabela de Carrinho
-            CREATE TABLE IF NOT EXISTS carrinho (
-                id SERIAL PRIMARY KEY,
-                usuario_id INTEGER REFERENCES usuarios(id) ON DELETE CASCADE,
-                produto_id INTEGER REFERENCES produtos(id) ON DELETE CASCADE,
-                quantidade INTEGER DEFAULT 1,
-                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-            );
+            CREATE TABLE IF NOT EXISTS `categorias` (
+                `id` INT AUTO_INCREMENT PRIMARY KEY,
+                `nome` VARCHAR(100) NOT NULL,
+                `descricao` TEXT,
+                `status` TINYINT(1) DEFAULT 1
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
-            -- Tabela de Pedidos
-            CREATE TABLE IF NOT EXISTS pedidos (
-                id SERIAL PRIMARY KEY,
-                usuario_id INTEGER REFERENCES usuarios(id) ON DELETE CASCADE,
-                total DECIMAL(10,2) NOT NULL DEFAULT 0.00,
-                status VARCHAR(20) DEFAULT 'pendente',
-                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-            );
+            ALTER TABLE `pedidos`
+              ADD PRIMARY KEY (`id`),
+              ADD KEY `id_usuario` (`id_usuario`);
 
-            -- Tabela de Itens do Pedido
-            CREATE TABLE IF NOT EXISTS pedidos_itens (
-                id SERIAL PRIMARY KEY,
-                pedido_id INTEGER REFERENCES pedidos(id) ON DELETE CASCADE,
-                produto_id INTEGER REFERENCES produtos(id) ON DELETE CASCADE,
-                quantidade INTEGER NOT NULL,
-                preco_unitario DECIMAL(10,2) NOT NULL,
-                subtotal DECIMAL(10,2) NOT NULL
-            );
+            ALTER TABLE `produtos`
+              ADD PRIMARY KEY (`id`);
+
+            ALTER TABLE `usuarios`
+              ADD PRIMARY KEY (`user_id`);
+
+            ALTER TABLE `pedidos`
+              MODIFY `id` int(64) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+
+            ALTER TABLE `produtos`
+              MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+
+            ALTER TABLE `usuarios`
+              MODIFY `user_id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=38;
+
+            ALTER TABLE `pedidos`
+              ADD CONSTRAINT `pedidos_ibfk_1` FOREIGN KEY (`id_usuario`) REFERENCES `usuarios` (`user_id`);
             ";
             
             // Executa a estrutura
@@ -115,7 +110,7 @@ class Migration extends CI_Controller {
                 }
             }
             
-            echo "<p style='color: green;'>✅ Estrutura das tabelas criada!</p>";
+            echo "<p style='color: green;'>✅ Estrutura das tabelas criada com sucesso!</p>";
             
             // Insere dados iniciais
             $this->insert_initial_data();
@@ -128,86 +123,70 @@ class Migration extends CI_Controller {
     }
     
     private function insert_initial_data() {
-        // Insere categorias
-        $categorias = [
-            ['nome' => 'Eletrônicos', 'descricao' => 'Produtos eletrônicos e tecnologia'],
-            ['nome' => 'Roupas', 'descricao' => 'Vestuário e acessórios'],
-            ['nome' => 'Casa e Jardim', 'descricao' => 'Produtos para casa e jardim'],
-            ['nome' => 'Esportes', 'descricao' => 'Artigos esportivos e fitness'],
-            ['nome' => 'Livros', 'descricao' => 'Livros e materiais educacionais']
-        ];
-        
-        foreach ($categorias as $categoria) {
-            // Verifica se já existe
-            $existing = $this->db->get_where('categorias', ['nome' => $categoria['nome']])->row();
-            if (!$existing) {
-                $this->db->insert('categorias', $categoria);
-            }
-        }
-        
-        echo "<p style='color: green;'>✅ Categorias inseridas!</p>";
-        
-        // Insere usuários padrão
+        // Limpa tabelas para evitar duplicatas, se necessário.
+        // CUIDADO: Isso apaga todos os dados existentes.
+        $this->db->query('SET FOREIGN_KEY_CHECKS = 0');
+        $this->db->truncate('pedidos');
+        $this->db->truncate('produtos');
+        $this->db->truncate('usuarios');
+        $this->db->truncate('categorias');
+        $this->db->query('SET FOREIGN_KEY_CHECKS = 1');
+        echo "<p style='color: orange;'>⚠️ Tabelas existentes foram limpas.</p>";
+
+        // Insere dados em 'usuarios'
         $usuarios = [
-            [
-                'nome' => 'Administrador',
-                'email' => 'admin@loja.com',
-                'senha' => password_hash('admin123', PASSWORD_DEFAULT),
-                'tipo_usuario' => 'admin'
-            ],
-            [
-                'nome' => 'Estoquista',
-                'email' => 'estoque@loja.com',
-                'senha' => password_hash('estoque123', PASSWORD_DEFAULT),
-                'tipo_usuario' => 'estoquista'
-            ],
-            [
-                'nome' => 'Cliente Teste',
-                'email' => 'cliente@loja.com',
-                'senha' => password_hash('cliente123', PASSWORD_DEFAULT),
-                'tipo_usuario' => 'cliente'
-            ]
+            ['user_id' => 10, 'nome' => 'João Silva', 'email' => 'joao.silva@example.com', 'telefone' => 123456789, 'carrinho' => null, 'tipo' => 'adm', 'logado' => 0, 'senha' => ''],
+            ['user_id' => 11, 'nome' => 'Maria Santos', 'email' => 'maria.santos@example.com', 'telefone' => 987654321, 'carrinho' => null, 'tipo' => 'estoquista', 'logado' => 0, 'senha' => ''],
+            ['user_id' => 12, 'nome' => 'Pedro Oliveira', 'email' => 'pedro.oliveira@example.com', 'telefone' => 111111111, 'carrinho' => null, 'tipo' => 'cliente', 'logado' => 0, 'senha' => ''],
+            ['user_id' => 13, 'nome' => 'Ana Souza', 'email' => 'ana.souza@example.com', 'telefone' => 222222222, 'carrinho' => null, 'tipo' => 'cliente', 'logado' => 0, 'senha' => ''],
+            ['user_id' => 14, 'nome' => 'Luiz Pereira', 'email' => 'luiz.pereira@example.com', 'telefone' => 333333333, 'carrinho' => null, 'tipo' => 'cliente', 'logado' => 0, 'senha' => ''],
+            ['user_id' => 15, 'nome' => 'Carla Costa', 'email' => 'carla.costa@example.com', 'telefone' => 444444444, 'carrinho' => null, 'tipo' => 'cliente', 'logado' => 0, 'senha' => ''],
+            ['user_id' => 16, 'nome' => 'Fernanda Almeida', 'email' => 'fernanda.almeida@example.com', 'telefone' => 555555555, 'carrinho' => null, 'tipo' => 'cliente', 'logado' => 0, 'senha' => ''],
+            ['user_id' => 17, 'nome' => 'Ricardo Martins', 'email' => 'ricardo.martins@example.com', 'telefone' => 666666666, 'carrinho' => null, 'tipo' => 'cliente', 'logado' => 0, 'senha' => ''],
+            ['user_id' => 18, 'nome' => 'Camila Lima', 'email' => 'camila.lima@example.com', 'telefone' => 777777777, 'carrinho' => null, 'tipo' => 'cliente', 'logado' => 0, 'senha' => ''],
+            ['user_id' => 31, 'nome' => 'José Matheus', 'email' => 'mateus.alvino.101@gmail.com', 'telefone' => 2147483647, 'carrinho' => null, 'tipo' => 'adm', 'logado' => 0, 'senha' => '732002cec7aeb7987bde842b9e00ee3b'],
+            ['user_id' => 32, 'nome' => 'José Matheus', 'email' => 'mateus.alvino.100@gmail.com', 'telefone' => 2147483647, 'carrinho' => '[[],[{\"id_produto\":\"17\",\"idUsuario\":\"32\"}]]', 'tipo' => 'cliente', 'logado' => 0, 'senha' => '732002cec7aeb7987bde842b9e00ee3b'],
+            ['user_id' => 33, 'nome' => 'Matheus', 'email' => 'mateusteste@gmail.com', 'telefone' => 2147483647, 'carrinho' => null, 'tipo' => 'estoquista', 'logado' => 0, 'senha' => '732002cec7aeb7987bde842b9e00ee3b'],
+            ['user_id' => 34, 'nome' => 'teste', 'email' => 'teste@gmail.com', 'telefone' => 1235678910, 'carrinho' => null, 'tipo' => 'cliente', 'logado' => 0, 'senha' => '732002cec7aeb7987bde842b9e00ee3b'],
+            ['user_id' => 37, 'nome' => 'Matheus', 'email' => 'mateus.alvino.2909@outlook.com', 'telefone' => 2147483647, 'carrinho' => null, 'tipo' => 'estoquista', 'logado' => 0, 'senha' => '732002cec7aeb7987bde842b9e00ee3b'],
         ];
-        
-        foreach ($usuarios as $usuario) {
-            // Verifica se já existe
-            $existing = $this->db->get_where('usuarios', ['email' => $usuario['email']])->row();
-            if (!$existing) {
-                $this->db->insert('usuarios', $usuario);
-            }
-        }
-        
-        echo "<p style='color: green;'>✅ Usuários padrão inseridos!</p>";
-        
-        // Insere alguns produtos de exemplo
+        $this->db->insert_batch('usuarios', $usuarios);
+        echo "<p style='color: green;'>✅ Dados de usuários inseridos!</p>";
+
+        // Insere dados em 'produtos'
         $produtos = [
-            [
-                'nome' => 'Smartphone Samsung Galaxy',
-                'descricao' => 'Smartphone com 128GB de armazenamento',
-                'preco' => 899.99,
-                'quantidade' => 50,
-                'categoria_id' => 1,
-                'foto' => 'smartphone.jpg'
-            ],
-            [
-                'nome' => 'Notebook Dell Inspiron',
-                'descricao' => 'Notebook para uso profissional',
-                'preco' => 2499.99,
-                'quantidade' => 25,
-                'categoria_id' => 1,
-                'foto' => 'notebook.jpg'
-            ]
+            ['id' => 10, 'nome' => 'Blusa Vinho', 'tamanho' => 'P', 'valor' => 29.99, 'descricao' => 'Blusa Vinho', 'quantidade' => 14, 'foto' => 'image-6.png', 'status' => 0],
+            ['id' => 11, 'nome' => 'Blusa Rosa', 'tamanho' => 'M', 'valor' => 29.99, 'descricao' => 'Blusa rosa de algodão tamanho M', 'quantidade' => 24, 'foto' => 'image-1.png', 'status' => 0],
+            ['id' => 12, 'nome' => 'Blusa Marrom', 'tamanho' => 'G', 'valor' => 29.99, 'descricao' => 'Blusa marrom de algodão tamanho G', 'quantidade' => 26, 'foto' => 'image-2.png', 'status' => 0],
+            ['id' => 13, 'nome' => 'Blusa Azul Claro', 'tamanho' => 'GG', 'valor' => 29.99, 'descricao' => 'Blusa azul claro de algodão tamanho GG', 'quantidade' => 19, 'foto' => 'image-3.png', 'status' => 0],
+            ['id' => 14, 'nome' => 'Blusa Azul Escuro', 'tamanho' => 'P', 'valor' => 29.99, 'descricao' => 'Blusa azul escuro de algodão tamanho P', 'quantidade' => 2, 'foto' => 'image-4.png', 'status' => 0],
+            ['id' => 15, 'nome' => 'Blusa Cinza Clar', 'tamanho' => 'M', 'valor' => 28.99, 'descricao' => 'Blusa Cinza Clar', 'quantidade' => 4, 'foto' => 'image-1.png', 'status' => 0],
+            ['id' => 16, 'nome' => 'Blusa Bege', 'tamanho' => 'G', 'valor' => 30.99, 'descricao' => 'Blusa Cinza ', 'quantidade' => 5, 'foto' => 'image-01.png', 'status' => 0],
+            ['id' => 17, 'nome' => 'Blusa Verde', 'tamanho' => 'GG', 'valor' => 29.99, 'descricao' => 'Blusa verde de algodão tamanho GG', 'quantidade' => 11, 'foto' => 'image-7.png', 'status' => 0],
+            ['id' => 18, 'nome' => 'Blusa vermelha', 'tamanho' => 'P', 'valor' => 30.99, 'descricao' => 'Blusa vermelha', 'quantidade' => 1, 'foto' => 'image-6.png', 'status' => 0],
         ];
-        
-        foreach ($produtos as $produto) {
-            // Verifica se já existe
-            $existing = $this->db->get_where('produtos', ['nome' => $produto['nome']])->row();
-            if (!$existing) {
-                $this->db->insert('produtos', $produto);
-            }
-        }
-        
-        echo "<p style='color: green;'>✅ Produtos de exemplo inseridos!</p>";
+        $this->db->insert_batch('produtos', $produtos);
+        echo "<p style='color: green;'>✅ Dados de produtos inseridos!</p>";
+
+        // Insere dados em 'pedidos'
+        $pedidos = [
+            ['id' => 11, 'id_produtos' => '15,16', 'id_usuario' => 31, 'status' => 'Processo de entrega', 'data_entrega' => '2024-03-26', 'valor' => 60],
+            ['id' => 12, 'id_produtos' => '18,16', 'id_usuario' => 31, 'status' => 'Processo de entrega', 'data_entrega' => '2024-03-26', 'valor' => 62],
+            ['id' => 13, 'id_produtos' => '13', 'id_usuario' => 31, 'status' => 'Processo de entrega', 'data_entrega' => '2024-03-27', 'valor' => 30],
+            ['id' => 14, 'id_produtos' => '10,11', 'id_usuario' => 37, 'status' => 'Processo de entrega', 'data_entrega' => '2024-03-27', 'valor' => 60],
+        ];
+        $this->db->insert_batch('pedidos', $pedidos);
+        echo "<p style='color: green;'>✅ Dados de pedidos inseridos!</p>";
+
+        // Insere dados em 'categorias'
+        $categorias = [
+            ['nome' => 'Roupas', 'descricao' => 'Vestuario em geral', 'status' => 1],
+            ['nome' => 'Calcado', 'descricao' => 'Sapatos, tenis, sandalias', 'status' => 1],
+            ['nome' => 'Acessorios', 'descricao' => 'Bolsas, cintos, etc.', 'status' => 1],
+        ];
+        $this->db->insert_batch('categorias', $categorias);
+        echo "<p style='color: green;'>✅ Dados de categorias inseridos!</p>";
+
         echo "<h3>🎉 Migração concluída com sucesso!</h3>";
     }
 }
