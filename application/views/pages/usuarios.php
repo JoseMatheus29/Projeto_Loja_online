@@ -156,12 +156,34 @@
 </div>
 
 <script>
+    function showToast(message, type = 'success') {
+        // Remove toast anterior se existir
+        const oldToast = document.getElementById('custom-toast');
+        if (oldToast) oldToast.remove();
+        // Cria novo toast
+        const toast = document.createElement('div');
+        toast.id = 'custom-toast';
+        toast.className = `fixed top-5 right-5 z-50 px-6 py-4 rounded shadow-lg text-white font-bold ${type === 'error' ? 'bg-red-600' : 'bg-green-600'}`;
+        toast.innerText = message;
+        document.body.appendChild(toast);
+        setTimeout(() => { toast.remove(); }, 4000);
+    }
     function goDelete(id) {
         var myUrl = '<?= base_url("usuarioController/deletarUsuario") ?>/' + id;
         if (confirm('Deseja realmente apagar esse registro?')) {
-            window.location.href = myUrl;
+            // Ajax para não redirecionar
+            fetch(myUrl, { method: 'GET', credentials: 'same-origin' })
+                .then(response => response.text())
+                .then(html => {
+                    if (html.includes('showToast')) {
+                        eval(html);
+                    } else {
+                        showToast('Usuário excluído com sucesso.');
+                        setTimeout(() => { location.reload(); }, 1200);
+                    }
+                });
         } else {
-            alert("Registro não alterado");
+            showToast("Registro não alterado", 'error');
             return false;
         }
     }

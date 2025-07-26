@@ -25,9 +25,12 @@ class Usuarios_model extends CI_Model {
         $this->db->where("user_id",$id);
         $result = $this->db->delete("usuarios");
 
-        // Restaura o estado do db_debug
+        // Captura erro de constraint (usuário com pedidos vinculados)
+        $error = $this->db->error();
         $this->db->db_debug = $db_debug;
-
+        if (!$result || ($error['code'] && strpos($error['message'], 'violates foreign key constraint') !== false)) {
+            return false;
+        }
         return $result;
     }
 
