@@ -1,0 +1,38 @@
+version: '3.8'
+
+services:
+  web:
+    build: .
+    container_name: loja_online_web_pg
+    ports:
+      - "80:80"
+    volumes:
+      - .:/var/www/html
+    depends_on:
+      - db
+    environment:
+      - DB_HOST=db
+      - DB_USERNAME=postgres
+      - DB_PASSWORD=admin123
+      - DB_DATABASE=loja_online
+      - DB_DRIVER=postgre
+      - DB_PORT=5432
+    restart: unless-stopped
+
+  db:
+    image: postgres:13
+    container_name: loja_online_db_pg
+    ports:
+      - "5432:5432"
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+      - ./scripts/ddl_postgresql.sql:/docker-entrypoint-initdb.d/01-schema.sql
+      - ./scripts/ddl_categorias_postgresql.sql:/docker-entrypoint-initdb.d/02-data.sql
+    environment:
+      - POSTGRES_DB=loja_online
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=admin123
+    restart: unless-stopped
+
+volumes:
+  pg_data:
