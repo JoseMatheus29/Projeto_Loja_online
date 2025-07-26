@@ -59,9 +59,7 @@ class usuarioController extends CI_Controller{
             $this->session->set_flashdata('delete_success', 'Usuário excluído com sucesso.');
             redirect(base_url('usuarioController'));
         } else {
-            // Retorna JS para exibir o mesmo toast de erro do cancelamento
-            echo "<script>showToast('Registro não alterado', 'error');</script>";
-            exit;
+            $this->session->set_flashdata('error', 'Erro ao deletar o usuario. Verifique se ele não está associado a um pedido.');
         }
     }
 
