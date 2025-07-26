@@ -35,10 +35,12 @@ class Migration extends CI_Controller {
     }
     
     public function run() {
-        echo "<h1>🔧 Executando Migração para PostgreSQL...</h1>";
+        $startTime = date('H:i:s');
+        echo "<h1>🔧 Executando Migração para PostgreSQL... <small>($startTime)</small></h1>";
         
         try {
-            // Adiciona o bloco para apagar as tabelas
+            $stepTime = date('H:i:s');
+            echo "<p><b>[$stepTime]</b> <span style='color:blue;'>Iniciando remoção das tabelas antigas...</span></p>";
             $drop_tables_sql = "
                 DROP TABLE IF EXISTS pedidos CASCADE;
                 DROP TABLE IF EXISTS produtos CASCADE;
@@ -52,8 +54,11 @@ class Migration extends CI_Controller {
                     $this->db->query($query);
                 }
             }
-            echo "<p style='color: orange;'>⚠️ Tabelas antigas foram removidas (se existiam).</p>";
+            $stepTime = date('H:i:s');
+            echo "<p style='color: orange;'><b>[$stepTime]</b> ⚠️ Tabelas antigas foram removidas (se existiam).</p>";
 
+            $stepTime = date('H:i:s');
+            echo "<p><b>[$stepTime]</b> <span style='color:blue;'>Criando estrutura das tabelas...</span></p>";
             // SQL para PostgreSQL, traduzido da estrutura original do MySQL
             $sql_structure = "
             CREATE TABLE usuarios (
@@ -97,7 +102,6 @@ class Migration extends CI_Controller {
                 CONSTRAINT fk_categoria FOREIGN KEY (categoria_id) REFERENCES categorias(id) ON DELETE SET NULL
             );
             ";
-            
             // Executa a estrutura
             $queries = explode(';', $sql_structure);
             foreach ($queries as $query) {
@@ -106,17 +110,23 @@ class Migration extends CI_Controller {
                     $this->db->query($query);
                 }
             }
-            
-            echo "<p style='color: green;'>✅ Estrutura das tabelas criada com sucesso!</p>";
-            
+            $stepTime = date('H:i:s');
+            echo "<p style='color: green;'><b>[$stepTime]</b> ✅ Estrutura das tabelas criada com sucesso!</p>";
+
+            $stepTime = date('H:i:s');
+            echo "<p><b>[$stepTime]</b> <span style='color:blue;'>Inserindo dados iniciais...</span></p>";
             // Insere dados iniciais
             $this->insert_initial_data();
-            
+            $stepTime = date('H:i:s');
+            echo "<p style='color: green;'><b>[$stepTime]</b> 🎉 Dados iniciais inseridos com sucesso!</p>";
+
         } catch (Exception $e) {
-            echo "<p style='color: red;'>❌ Erro na migração: " . $e->getMessage() . "</p>";
+            $stepTime = date('H:i:s');
+            echo "<p style='color: red;'><b>[$stepTime]</b> ❌ Erro na migração: " . $e->getMessage() . "</p>";
         }
-        
-        echo "<p><a href='" . base_url('migration') . "'>🔙 Voltar</a></p>";
+
+        $endTime = date('H:i:s');
+        echo "<p><b>[$endTime]</b> <a href='" . base_url('migration') . "'>🔙 Voltar</a></p>";
     }
     
     private function insert_initial_data() {
